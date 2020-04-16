@@ -70,8 +70,8 @@ ax(1).View = [160 15];
 % Wärmestromdichte
 ax(2) = subplot(2,1,2);
 fsurf(-lambda*theta_gradx,[0 L t0 t1]);
+ax(2).Title.Interpreter = 'latex';
 ax(2).Title.String = 'W\"armestromdichte $\dot{q}(x,t)$';
-ax(1).Title.Interpreter = 'latex';
 ax(2).XAxis.Label.String = 'Position auf Stab [m]';
 ax(2).YAxis.Label.String = 'Zeit [h]';
 ax(2).ZAxis.Label.String = 'Temperatur \vartheta(x,t) [°C]';
