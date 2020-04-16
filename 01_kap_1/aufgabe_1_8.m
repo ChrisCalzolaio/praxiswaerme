@@ -1,3 +1,13 @@
+P = [1; 1];
+alpha = deg2rad(60);
+unitvec = [cos(alpha);sin(alpha)];
+
+syms x y;
+theta = symfun(64/(x.^2 + y.^2 + 2),[x,y]);
+fsurf(theta,[-5 5 -5 5]);
+quiver(P',unitvec')
+return;
+
 x = linspace(-10,10,1e3);
 y = x';
 [x,y] = meshgrid(x,y);
