@@ -14,17 +14,26 @@ thetaG = 28;            % [°C]
 % ODE prefactor
 betafun = @(Vdot,V,k,A,rho_l,cp) Vdot/V + (k * A) / (rho_L * V * cp);
 
-% ode setup
+% differential equation setup
 tspan = [0 1e3];
 beta = betafun(Vdot,V,k,A,rho_L,cp);
+syms theta(t)
+thetaEqn = diff(theta,t) == - beta * (theta - thetaInf);
+cond = theta(0) == theta0;
+thetaSol = symfun(dsolve(thetaEqn,cond),t);
 
 %% d) Grenztemperatur
-[t,theta] = ode45(@(t,theta) odefun(t,theta,beta,thetaInf),tspan,theta0);
+tlong = 1e6;
+fprintf(1,['d) die Grenztemperatur theta_i_inf nach sehr langer Zeit'...
+            '( %.4e s ) beträgt %.3f°C.\n'],...
+            tlong,...
+            thetaSol(tlong));
 
 figH = getFigH(1,'Color','default','WindowSytle','docked');
 axH = axes(figH); grid on; grid minor;
 
-thetaPlt = line(axH,t,theta);
+range = linspace(0,1e3);
+thetaPlt = line(range,thetaSol(range));
 thetaGPlt = yline(axH,thetaG,'LineStyle','--');
 
 
