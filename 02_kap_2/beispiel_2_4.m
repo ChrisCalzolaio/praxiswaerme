@@ -21,6 +21,7 @@ syms theta(t)
 thetaEqn = diff(theta,t) == - beta * (theta - thetaInf);
 cond = theta(0) == theta0;
 thetaSol = symfun(dsolve(thetaEqn,cond),t);
+clearvars thetaEqn cond
 
 %% d) Grenztemperatur
 tlong = 1e6;
@@ -28,6 +29,10 @@ fprintf(1,['d) die Grenztemperatur theta_i_inf nach sehr langer Zeit'...
             '( %.4e s ) beträgt %.3f°C.\n'],...
             tlong,...
             thetaSol(tlong));
+clearvars tlong
+        
+%% e) Zeitspanne t1 zum Erreichen der Temperatur thetaG
+
 
 figH = getFigH(1,'Color','default','WindowSytle','docked');
 axH = axes(figH); grid on; grid minor;
