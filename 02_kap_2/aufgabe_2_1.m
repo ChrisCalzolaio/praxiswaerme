@@ -6,15 +6,20 @@ lambda = 2;                             % [W*m*K^-1]
 thetaInf = -10;                         % [°C]
 thetaF = 0;                             % [°C]
 
+% precalc
 beta = sqrt((2 * alphaK) / (lambda * H));
 
+% numeric solution
+syms theta(x)
+thetaEqn = symfun(diff(theta,x,2) - beta*theta == -beta*thetaInf,x);
+cond(1) = theta(0) == 0;
+dTheatCond = diff(theta,x);
+cond(2) = dTheatCond(B) == 0;
+thetaSol(x) = dsolve(thetaEqn,cond);
 
-c2 = thetaF - thetaInf;
-c1 = -c2 * tanh(beta*B);
-syms x
-theta = symfun(c1 * sinh(beta * x) + c2 * cosh(beta * x) + thetaInf,x);
-
-% plotting
+% output
+x = linspace(0,2,1e3);
+thetaNum = double(vpa(thetaSol(x)));
 figH = getFigH(1,'WindowStyle','docked');
-fPlt = fplot(theta,[0 B]);
-grid on; grid minor
+fPlot = line(x,double(vpa(thetaSol(x))));
+grid on; grid minor;
